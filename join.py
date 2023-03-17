@@ -19,19 +19,20 @@ def parse_args():
 # Feel free to create more mappers and reducers.
 def mapper1(record):
     return (record[2], [record])
-    
 
 def reducer1(a, b):
     return a + b
 
-def mapper2(a, b):
-    for a in record[1]:
-        for b in record[1]:
-            yield a + b
+def reducer2(a,b):
+    comp = record[1]
+
+def mapper2(record):
+    for c in record[1]:
+        for d in record[1]:
+            yield c + d
 
 def filter1(record):
     return (record[0], record[17]) == ('rele', 'disp')
-
 
 def main():
     args = parse_args()
@@ -41,7 +42,7 @@ def main():
         data = [json.loads(line) for line in infile]
     
     # TODO: build your pipeline
-    join_result = sc.parallelize(data, args.n).map(mapper1).reduceByKey(reducer1).filter(filter1).collect()
+    join_result = sc.parallelize(data, args.n).map(mapper1).reduceByKey(reducer1).flatMap(mapper2).filter(filter1).collect()
 
     sc.stop()
 
